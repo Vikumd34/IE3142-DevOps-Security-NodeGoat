@@ -15,17 +15,19 @@ jobs:
     runs-on: ubuntu-22.04
     env:
       ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
+      COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+      CRYPTO_KEY: ${{ secrets.CRYPTO_KEY }}
 
     steps:
-      - name: Verify ZAP API key is configured
+      - name: Verify required secrets are configured
         shell: bash
         run: |
-          if [ -z "$ZAP_API_KEY" ]; then
-            echo "ZAP_API_KEY is not configured."
+          if [ -z "$ZAP_API_KEY" ] || [ -z "$COOKIE_SECRET" ] || [ -z "$CRYPTO_KEY" ]; then
+            echo "One or more required application secrets are not configured."
             exit 1
           fi
 
-          echo "ZAP_API_KEY is configured securely."
+          echo "Required application secrets are configured securely."
 
   semgrep:
     name: Security Gate 1 - Semgrep SAST
