@@ -10,6 +10,23 @@ permissions:
   contents: read
 
 jobs:
+  secrets-check:
+    name: Security Gate 5 - Secrets Configuration
+    runs-on: ubuntu-22.04
+    env:
+      ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
+
+    steps:
+      - name: Verify ZAP API key is configured
+        shell: bash
+        run: |
+          if [ -z "$ZAP_API_KEY" ]; then
+            echo "ZAP_API_KEY is not configured."
+            exit 1
+          fi
+
+          echo "ZAP_API_KEY is configured securely."
+
   semgrep:
     name: Security Gate 1 - Semgrep SAST
     runs-on: ubuntu-22.04
