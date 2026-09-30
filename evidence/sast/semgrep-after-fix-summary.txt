@@ -1,0 +1,13 @@
+Semgrep After-Fix Scan Summary
+==============================
+Semgrep Version: 1.178.0
+Rules Run: 214
+Targets Scanned: 49
+Total Findings: 16
+
+Severity:
+WARNING: 15
+ERROR: 0
+INFO: 1
+
+Scan completed successfully.
