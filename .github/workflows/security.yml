@@ -1,0 +1,25 @@
+name: DevSecOps Security Pipeline
+
+on:
+  push:
+    branches:
+      - mem4-cicd-secrets
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: Security Gate 1 - Semgrep SAST
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Semgrep
+        run: pip install semgrep==1.178.0
+
+      - name: Run Semgrep SAST
+        run: semgrep scan --config auto app config server.js
