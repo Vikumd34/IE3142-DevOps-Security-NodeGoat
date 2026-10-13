@@ -4,7 +4,7 @@ on: [push, pull_request]
 jobs:
   e2e-test:
     name: Node.js
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Use cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
@@ -38,7 +38,7 @@ jobs:
       - name: Start MongoDB
         run: |
           docker run -d -p 27017:27017 mongo:4.0
-          timeout 60s bash -c 'until nc -z -w 2 localhost 27017 && echo MongoDB ready; do sleep 2; done'
+          timeout 60s bash -c 'until docker exec "$(docker ps -q --filter ancestor=mongo:4.0)" mongo --quiet --eval "db.adminCommand({ ping: 1 }).ok" | grep -qx 1; do sleep 2; done'
 
       - name: Run E2E test suite
         id: test-suite
@@ -55,7 +55,7 @@ jobs:
 
       - name: Upload cypress artifacts
         if: failure() && (steps.test-suite.outcome == 'failure')
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-artifacts-node${{ matrix.node-version }}
           path: test/e2e/screenshots
