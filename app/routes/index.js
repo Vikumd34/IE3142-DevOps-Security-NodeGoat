@@ -68,7 +68,10 @@ const index = (app, db) => {
 
     // Handle redirect for learning resources link
     app.get("/learn", isLoggedIn, (req, res) => {
-        const allowedUrl = "https://www.khanacademy.org/economics-finance-domain/core-finance/investment-vehicles-tutorial/ira-401ks/v/traditional-iras";
+        const allowedUrl = "https://www.khanacademy.org/" +
+            "economics-finance-domain/core-finance/" +
+            "investment-vehicles-tutorial/ira-401ks/" +
+            "v/traditional-iras";
         return res.redirect(allowedUrl);
     });
 
