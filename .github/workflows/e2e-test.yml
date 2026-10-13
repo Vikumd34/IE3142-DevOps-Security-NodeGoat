@@ -42,6 +42,9 @@ jobs:
 
       - name: Run E2E test suite
         id: test-suite
+        env:
+          COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+          CRYPTO_KEY: ${{ secrets.CRYPTO_KEY }}
         run: |
           NODE_ENV=test npm start -- --silent &
           npm run test:ci -- --config video=true
